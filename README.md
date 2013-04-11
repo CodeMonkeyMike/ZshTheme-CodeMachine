@@ -14,5 +14,6 @@ Hey Zsh users this is my theme, it...
   -Return code
   
   -Looks awesome
+  
 
 To install with Oh-my-zsh just copy into themes folder and change .zhsrc file to have CodeMachine as the theme
