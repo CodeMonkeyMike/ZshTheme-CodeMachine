@@ -1,6 +1,7 @@
 Codemachine Zsh Theme!
 ----------------------
 ![](https://raw.githubusercontent.com/CodeMonkeyMike/ZshTheme-CodeMachine/master/sample.png)
+
 Hey Zsh users this is my theme, it...
 
   * Displays git info (Unmerged, Uncommited, Not Tracked, Branch)
