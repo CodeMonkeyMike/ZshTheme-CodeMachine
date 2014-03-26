@@ -9,6 +9,7 @@ Hey Zsh users this is my theme, it...
   * Has prompt input on 2nd line
   * Displays symbol for Mercurial repo
   * Return code
+  * Displays if connected through SSH
   * Looks awesome
 
 To install with Oh-my-zsh just copy into themes folder and change .zhsrc file to have CodeMachine as the theme
