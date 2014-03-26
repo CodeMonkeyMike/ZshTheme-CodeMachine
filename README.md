@@ -1,4 +1,5 @@
 Codemachine Zsh Theme!
+----------------------
 
 Hey Zsh users this is my theme, it...
 
