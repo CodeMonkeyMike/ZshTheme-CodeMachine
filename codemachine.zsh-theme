@@ -40,46 +40,52 @@ function my_current_branch() {
   echo $(current_branch || echo "(no branch)")
 }
 
+if [ "$(whoami)" = "root" ]
+then TIP_COLOR="%{$fg_bold[red]%}"
+else TIP_COLOR="%{$fg_bold[green]%}"
+fi
+
 function ssh_connection() {
   if [[ -n $SSH_CONNECTION ]]; then
-    echo "%{$fg_bold[red]%}(ssh) "
+    echo "$SSH"
   fi
 }
 # Outputs a symbol for the repository type
 function repos_type {
   git branch >/dev/null 2>/dev/null && echo '' && return
-  hg root >/dev/null 2>/dev/null && echo '[ ☿ ]' && return
+  hg root >/dev/null 2>/dev/null && echo '${PREFIX}☿${SUFFIX}' && return
   echo ''
 }
-start1="%{$fg_bold[green]%}╭─%{$reset_color%}"
-start2="%{$fg_bold[green]%}╰─≻%{$reset_color%}"
-lft="%{$fg_bold[green]%}─[%{$reset_color%}"
-lft2="%{$fg_bold[green]%}[%{$reset_color%}"
-rgt="%{$fg_bold[green]%}] %{$reset_color%}"
-rgte="%{$fg_bold[green]%}]%{$reset_color%}"
-myuser="%{$fg[green]%}%n%{$reset_color%}"
-myhost="%{$fg[yellow]%}%m%{$reset_color%}"
-mypath="%{$fg_bold[blue]%}%${PWD/#$HOME/~}%{$reset_color%}"
+START_LINE_ONE="%{$fg_bold[green]%}╭──"
+START_LINE_TWO="%{$fg_bold[green]%}╰─"
+THE_TIP="${TIP_COLOR}≻%{$reset_color%}"
+PREFIX="%{$fg_bold[green]%}[ "
+SUFFIX="%{$fg_bold[green]%} ]"
+MY_USER="%{$fg_no_bold[green]%}%n"
+MY_HOST="%{$fg_no_bold[yellow]%}%m"
+MY_PATH="%{$fg_bold[blue]%}%${PWD/#$HOME/~}"
+SSH="%{$fg_bold[green]%}(ssh)"
 
 # Current time 12-hour format
-mytime="%{$fg[white]%}%t%{$reset_color%}"
+MY_TIME="%{$fg_no_bold[white]%}%t%{$reset_color%}"
 
 # Return code of last command executed
-myreturn="%{$fg[yellow]%}%?%{$reset_color%}"
+MY_RETURN="%{$fg_no_bold[yellow]%}%?%{$reset_color%}"
 
 # Number of terminals opened
-myamount="%{$fg[yellow]%}%L%{$reset_color%}"
+MY_TERMS="%{$fg_no_bold[yellow]%}%L%{$reset_color%}"
 
-PROMPT='${start1}${lft} ${myuser}@${myhost} ${rgt}${lft2} ${mypath} ${rgte}$(my_git_prompt) $(ssh_connection) $(repos_type)
-$start2'
-RPS1="${myreturn}"
+# Line one and two of the prompt
+PROMPT='${START_LINE_ONE}${PREFIX}${MY_USER}@${MY_HOST}${SUFFIX} ${PREFIX}${MY_PATH}${SUFFIX} $(my_git_prompt) $(ssh_connection) $(repos_type)
+${START_LINE_TWO}${THE_TIP}'
+RPS1="$(vi_mode_prompt_info) ${MY_RETURN}"
 
-#Git Repo Info Accessed By "$(git_prompt_info)"
+#Git Repo Info
 ZSH_THEME_PROMPT_RETURNCODE_PREFIX="%{$fg_bold[red]%}"
-ZSH_THEME_GIT_PROMPT_PREFIX=" %{$fg_bold[green]%}[ %{$fg_bold[yellow]%}"
+ZSH_THEME_GIT_PROMPT_PREFIX="%{$fg_bold[green]%}[ %{$fg_bold[yellow]%}"
 ZSH_THEME_GIT_PROMPT_AHEAD="%{$fg_bold[magenta]%}↑"
 ZSH_THEME_GIT_PROMPT_STAGED="%{$fg_bold[green]%}●"
 ZSH_THEME_GIT_PROMPT_UNSTAGED="%{$fg_bold[red]%}●"
 ZSH_THEME_GIT_PROMPT_UNTRACKED="%{$fg_bold[white]%}●"
-ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg_bold[red]%}✕"
-ZSH_THEME_GIT_PROMPT_SUFFIX=" %{$fg_bold[green]%}]%{$reset_color%}"
+ZSH_THEME_GIT_PROMPT_UNMERGED="%{$fg_bold[red]%}✘"
+ZSH_THEME_GIT_PROMPT_SUFFIX=" $fg_bold[green]]%{$reset_color%}"
